@@ -10,7 +10,7 @@ import {UserModule} from './apps/user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(`${process.env.DB_URI}`),
+    MongooseModule.forRoot(`${process.env.DB_URI_ATLAS}`),
     AuthModule,
     BlogModule,
     HomeModule,
