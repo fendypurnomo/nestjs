@@ -32,6 +32,9 @@ importers:
       '@nestjs/platform-express':
         specifier: ^11.0.11
         version: 11.0.11(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)
+      bcrypt:
+        specifier: ^5.1.1
+        version: 5.1.1
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -99,9 +102,6 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.25.0
         version: 8.25.0(eslint@9.21.0)(typescript@5.8.2)
-      bcrypt:
-        specifier: ^5.1.1
-        version: 5.1.1
       eslint:
         specifier: ^9.21.0
         version: 9.21.0
@@ -7221,7 +7221,7 @@ snapshots:
 
   send@1.1.0:
     dependencies:
-      debug: 4.3.6
+      debug: 4.4.0
       destroy: 1.2.0
       encodeurl: 2.0.0
       escape-html: 1.0.3
