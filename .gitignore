@@ -1,4 +1,5 @@
 /dist
+/drizzle
 /node_modules
 .env
 desktop.ini
