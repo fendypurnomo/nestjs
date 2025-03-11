@@ -1,8 +1,6 @@
 import { pgTable, uniqueIndex, check, serial, varchar, index, foreignKey, primaryKey, smallserial, char, numeric, text, date, pgView, bigint } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
-
-
 export const wilayahJenis = pgTable("wilayah_jenis", {
 	id: serial().primaryKey().notNull(),
 	jenis: varchar({ length: 10 }),
@@ -106,6 +104,7 @@ export const wilayahTingkat1 = pgTable("wilayah_tingkat_1", {
 	check("wil_prov_kode_angka_ck", sql`kode_angka ~ '^\d{2}$'::text`),
 	check("wil_prov_kode_huruf_ck", sql`kode_huruf ~ '[A-Za-z]{2}$'::text`),
 ]);
+
 export const viewWilProv = pgView("view_wil_prov", {	kodeProvinsiAngka: char("kode_provinsi_angka", { length: 2 }),
 	kodeProvinsiHuruf: char("kode_provinsi_huruf", { length: 2 }),
 	namaProvinsi: varchar("nama_provinsi", { length: 35 }),
