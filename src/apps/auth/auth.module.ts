@@ -4,8 +4,8 @@ import {JwtModule} from '@nestjs/jwt';
 import {MongooseModule} from '@nestjs/mongoose';
 import {PassportModule} from '@nestjs/passport';
 
-import {UserModule} from '../user/user.module';
-import {User, UserSchema} from '../user/user.schema';
+import {UserModule} from 'src/apps/user/user.module';
+import {User, UserSchema} from 'src/apps/user/user.schema';
 import {AuthController} from './auth.controller';
 import {AuthService} from './auth.service';
 import {JwtAuthGuard} from './jwt-auth.guard';

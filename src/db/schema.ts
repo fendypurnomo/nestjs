@@ -1,4 +1,4 @@
-import { pgTable, uniqueIndex, check, serial, varchar, index, foreignKey, primaryKey, smallserial, char, numeric, text, date, pgView, bigint } from "drizzle-orm/pg-core"
+import { pgTable, uniqueIndex, check, serial, varchar, index, foreignKey, unique, char, date, text, primaryKey, smallserial, numeric, pgView, bigint } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 export const wilayahJenis = pgTable("wilayah_jenis", {
@@ -15,6 +15,35 @@ export const wilayahGeografis = pgTable("wilayah_geografis", {
 }, (table) => [
 	uniqueIndex("wil_geo_id_idx").using("btree", table.id.asc().nullsLast().op("int4_ops")),
 	check("wil_geo_nama_ck", sql`char_length((geografis)::text) <= 15`),
+]);
+
+export const wilayahTingkat1 = pgTable("wilayah_tingkat_1", {
+	id: serial('id').primaryKey().notNull(),
+	kodeAngka: char("kode_angka", { length: 2 }).notNull(),
+	kodeHuruf: char("kode_huruf", { length: 2 }).notNull(),
+	namaProvinsi: varchar("nama_provinsi", { length: 35 }).notNull(),
+	kependekan: char({ length: 10 }),
+	ibuKota: varchar("ibu_kota", { length: 15 }),
+	wilayahGeografis: varchar("wilayah_geografis", { length: 15 }).notNull(),
+	tanggalHariJadi: date("tanggal_hari_jadi"),
+	tanggalPembentukan: date("tanggal_pembentukan"),
+	undangUndang: varchar("undang_undang", { length: 8 }),
+	urlLambang: text("url_lambang"),
+}, (table) => [
+	index("wil_prov_ibu_kota_idx").using("btree", table.ibuKota.asc().nullsLast().op("text_ops")),
+	uniqueIndex("wil_prov_id_idx").using("btree", table.id.asc().nullsLast().op("int4_ops")),
+	index("wil_prov_kep_idx").using("btree", table.kependekan.asc().nullsLast().op("bpchar_ops")),
+	uniqueIndex("wil_prov_kode_huruf_idx").using("btree", table.kodeHuruf.asc().nullsLast().op("bpchar_ops")),
+	index("wil_prov_nama_idx").using("btree", table.namaProvinsi.asc().nullsLast().op("text_ops")),
+	foreignKey({
+			columns: [table.wilayahGeografis],
+			foreignColumns: [wilayahGeografis.geografis],
+			name: "wil_prov_geo_fk"
+		}).onUpdate("cascade").onDelete("restrict"),
+	unique("wil_prov_kode_angka_unique").on(table.kodeAngka),
+	unique("wil_prov_kode_huruf_unique").on(table.kodeHuruf),
+	check("wil_prov_kode_angka_ck", sql`kode_angka ~ '^\d{2}$'::text`),
+	check("wil_prov_kode_huruf_ck", sql`kode_huruf ~ '[A-Za-z]{2}$'::text`),
 ]);
 
 export const wilayahTingkat3 = pgTable("wilayah_tingkat_3", {
@@ -76,35 +105,6 @@ export const wilayahTingkat2 = pgTable("wilayah_tingkat_2", {
 	check("wil_kab_kota_kode_prov_ck", sql`kode_provinsi ~ '^\d{2}$'::text`),
 	check("wil_kab_kota_kode_ck", sql`kode_kab_kota ~ '^\d{4}$'::text`),
 ]);
-
-export const wilayahTingkat1 = pgTable("wilayah_tingkat_1", {
-	id: serial().notNull(),
-	kodeAngka: char("kode_angka", { length: 2 }).notNull(),
-	kodeHuruf: char("kode_huruf", { length: 2 }).notNull(),
-	namaProvinsi: varchar("nama_provinsi", { length: 35 }).notNull(),
-	kependekan: char({ length: 10 }),
-	ibuKota: varchar("ibu_kota", { length: 15 }),
-	wilayahGeografis: varchar("wilayah_geografis", { length: 15 }).notNull(),
-	tanggalHariJadi: date("tanggal_hari_jadi"),
-	tanggalPembentukan: date("tanggal_pembentukan"),
-	undangUndang: varchar("undang_undang", { length: 8 }),
-	urlLambang: text("url_lambang"),
-}, (table) => [
-	index("wil_prov_ibu_kota_idx").using("btree", table.ibuKota.asc().nullsLast().op("text_ops")),
-	uniqueIndex("wil_prov_id_idx").using("btree", table.id.asc().nullsLast().op("int4_ops")),
-	index("wil_prov_kep_idx").using("btree", table.kependekan.asc().nullsLast().op("bpchar_ops")),
-	uniqueIndex("wil_prov_kode_huruf_idx").using("btree", table.kodeHuruf.asc().nullsLast().op("bpchar_ops")),
-	index("wil_prov_nama_idx").using("btree", table.namaProvinsi.asc().nullsLast().op("text_ops")),
-	foreignKey({
-			columns: [table.wilayahGeografis],
-			foreignColumns: [wilayahGeografis.geografis],
-			name: "wil_prov_geo_fk"
-		}).onUpdate("cascade").onDelete("restrict"),
-	primaryKey({ columns: [table.id, table.kodeAngka, table.kodeHuruf], name: "wilayah_tingkat_1_pkey"}),
-	check("wil_prov_kode_angka_ck", sql`kode_angka ~ '^\d{2}$'::text`),
-	check("wil_prov_kode_huruf_ck", sql`kode_huruf ~ '[A-Za-z]{2}$'::text`),
-]);
-
 export const viewWilProv = pgView("view_wil_prov", {	kodeProvinsiAngka: char("kode_provinsi_angka", { length: 2 }),
 	kodeProvinsiHuruf: char("kode_provinsi_huruf", { length: 2 }),
 	namaProvinsi: varchar("nama_provinsi", { length: 35 }),

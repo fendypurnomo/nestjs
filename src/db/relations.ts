@@ -1,5 +1,18 @@
 import { relations } from "drizzle-orm/relations";
-import { wilayahTingkat1, wilayahTingkat3, wilayahTingkat2, wilayahJenis, wilayahGeografis } from "./schema";
+import { wilayahGeografis, wilayahTingkat1, wilayahTingkat3, wilayahTingkat2, wilayahJenis } from "./schema";
+
+export const wilayahTingkat1Relations = relations(wilayahTingkat1, ({one, many}) => ({
+	wilayahGeografi: one(wilayahGeografis, {
+		fields: [wilayahTingkat1.wilayahGeografis],
+		references: [wilayahGeografis.geografis]
+	}),
+	wilayahTingkat3s: many(wilayahTingkat3),
+	wilayahTingkat2s: many(wilayahTingkat2),
+}));
+
+export const wilayahGeografisRelations = relations(wilayahGeografis, ({many}) => ({
+	wilayahTingkat1s: many(wilayahTingkat1),
+}));
 
 export const wilayahTingkat3Relations = relations(wilayahTingkat3, ({one}) => ({
 	wilayahTingkat1: one(wilayahTingkat1, {
@@ -9,15 +22,6 @@ export const wilayahTingkat3Relations = relations(wilayahTingkat3, ({one}) => ({
 	wilayahTingkat2: one(wilayahTingkat2, {
 		fields: [wilayahTingkat3.kodeKabKota],
 		references: [wilayahTingkat2.kodeKabKota]
-	}),
-}));
-
-export const wilayahTingkat1Relations = relations(wilayahTingkat1, ({one, many}) => ({
-	wilayahTingkat3s: many(wilayahTingkat3),
-	wilayahTingkat2s: many(wilayahTingkat2),
-	wilayahGeografi: one(wilayahGeografis, {
-		fields: [wilayahTingkat1.wilayahGeografis],
-		references: [wilayahGeografis.geografis]
 	}),
 }));
 
@@ -35,8 +39,4 @@ export const wilayahTingkat2Relations = relations(wilayahTingkat2, ({one, many})
 
 export const wilayahJenisRelations = relations(wilayahJenis, ({many}) => ({
 	wilayahTingkat2s: many(wilayahTingkat2),
-}));
-
-export const wilayahGeografisRelations = relations(wilayahGeografis, ({many}) => ({
-	wilayahTingkat1s: many(wilayahTingkat1),
 }));

@@ -8,8 +8,8 @@ import {
   Request
 } from '@nestjs/common';
 import {Response} from 'express';
-import {UserDto, CheckEmailDto} from '../user/user.dto';
-import {UserService} from '../user/user.service';
+import {UserDto, CheckEmailDto} from 'src/apps/user/user.dto';
+import {UserService} from 'src/apps/user/user.service';
 import {AuthService} from './auth.service';
 import {LocalAuthGuard} from './local-auth.guard';
 import {Public} from './decorator';

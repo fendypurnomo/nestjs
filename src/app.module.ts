@@ -12,7 +12,7 @@ import { WilayahModule } from './apps/wilayah/wilayah.module';
     imports: [
         ConfigModule.forRoot(),
         // Koneksi ke MongoDB
-        MongooseModule.forRoot(`${process.env.MONGO_URI_RAILWAY}`),
+        MongooseModule.forRoot(`${process.env.MONGO_URI_ATLAS}`),
         AuthModule,
         BlogModule,
         HomeModule,
