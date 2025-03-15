@@ -40,14 +40,14 @@ export function handleEmptyToNull(input: string | null | undefined): string | nu
 }
 
 /*
- * Fungsi ini digunakan untuk menghandle error dari class-validator
+ * Fungsi ini digunakan untuk menghandle string dari class-validator
  */
 export function upperCase(input: string): string {
     return input.toUpperCase();
 }
 
 /*
- * Fungsi ini digunakan untuk menghandle error dari class-validator
+ * Fungsi ini digunakan untuk menghandle string dari class-validator
  */
 export function upperCaseFirst(input: string): string {
     return input
